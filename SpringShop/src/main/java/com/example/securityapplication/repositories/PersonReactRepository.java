@@ -9,8 +9,7 @@ import java.util.Optional;
 public interface PersonReactRepository extends JpaRepository<PersonReact, Integer> {
     Optional<PersonReact> findByLogin(String login);
 
-    @Override
-    <S extends PersonReact> S save(S entity);
+
 
     @Override
     void deleteById(Integer integer);

@@ -1,7 +1,6 @@
 package com.example.securityapplication.controllers;
 
 import com.example.securityapplication.config.JWTTokenHelper;
-import com.example.securityapplication.models.Person;
 import com.example.securityapplication.models.PersonReact;
 import com.example.securityapplication.request.AuthenticationRequest;
 import com.example.securityapplication.response.LoginResponse;
@@ -58,6 +57,7 @@ public class AuthenticationReactController {
         LoginResponse response = new LoginResponse();
         response.setToken(jwtToken);
         response.setRole(user.getAuthorities().toString());
+        response.setLogin(user.getUsername());
         System.out.println(jwtToken);
         //return  new ResponseEntity<>(response, HttpStatus.OK);
         try {
@@ -69,7 +69,7 @@ public class AuthenticationReactController {
     }
 
     @GetMapping("/registration")
-    public String registration(@ModelAttribute("person") Person person){
+    public String registration(@ModelAttribute("person") PersonReact person){
         return "registration/registration";
     }
 

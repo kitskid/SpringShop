@@ -1,5 +1,6 @@
 package com.example.securityapplication.models;
 
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -7,12 +8,13 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "person_react")
+@Table(name = "provider")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PersonReact {
+public class Provider {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +23,6 @@ public class PersonReact {
     @Size(min = 5, max = 100, message = "Имя должно быть от 5 и до 100 символов")
     @Column(name = "login")
     private String login;
-    //@NotEmpty(message = "Фамилия не может быть пустой")
-   // @Size(min = 5, max = 100, message = "Фамилия должна быть от 5 и до 100 символов")
-    //@Column(name = "lastName")
-    //private String lastName;
     @NotEmpty(message = "Email не может быть пустой")
     @Column(name = "email")
     private String email;
@@ -40,25 +38,22 @@ public class PersonReact {
 
     @Column(name = "filename")
     private String fileName;
-
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @ManyToMany()
-    @JoinTable(name = "product_cart", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> product;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "provider")
+    private List<Product> products = new ArrayList<>();
 
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @OneToMany(mappedBy = "personReact")
-    private List<Order> orderList;
 
-    public PersonReact() {
+
+    public Provider() {
     }
 
-    public PersonReact(int id, String login, String email, String phone, String password) {
-        this.id = id;
+    public Provider(String login, String email, String phone, String password, String role, String fileName) {
         this.login = login;
         this.email = email;
         this.phone = phone;
         this.password = password;
+        this.role = role;
+        this.fileName = fileName;
     }
 
     public int getId() {
@@ -116,4 +111,13 @@ public class PersonReact {
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 }
+
